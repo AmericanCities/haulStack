@@ -1,0 +1,32 @@
+    <ion-view title="Haul Stack">
+        <ion-content>
+            <div class = "homeTopBoxes">
+                <div id = "left">
+                    <div class ="smallBox"></div>
+                    <div class ="mediumBox" id="purpleHomeBox"></div>
+                </div>
+                <div class ="largeBox" id ="largeBlueBox"><p id="homeText">Stack and View your Gear</p></div>
+                <div class ="mediumBox" id="blackMediumBox"></div>
+
+            <!--Login bottom boxes-->
+            <div class = "homeBottonBoxes">
+                <div class="largeBox" id="loginBox">
+                    <p>login</p>
+                    <div class="list">
+                        <label class="item item-input">
+                            <span class="input-label">u:</span>
+                            <input ng-model="username" type="text">
+                        </label>
+                        <label class="item item-input">
+                            <span class="input-label">p:</span>
+                            <input ng-model="password" type="password">
+                        </label>
+                        <button ng-click="login(username,password)" class="button button-small button-positive">Sign In</button>
+                        <button ng-click="register(username,password)" class="button button-small button-positive">Register</button>
+                    </div>
+                </div>
+                <div id="bottomBlackBox"></div>
+                <div id="bottomPupleBox"></div>
+            </div>
+        </ion-content>
+    </ion-view>
