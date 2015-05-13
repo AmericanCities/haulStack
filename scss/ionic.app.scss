@@ -43,7 +43,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 
 .smallBox {
-  background-color: green;
+//  background-color: green;
   width: 20%;
   height:90px;
 }
@@ -86,9 +86,10 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   padding:15px;
   line-height:1.3em;
 }
+//-------------- Bottom Boxes
 
 .homeBottonBoxes{
-  //clear: both;
+  clear: both;
   position: relative;
   top:-100px;
   height: 50%;

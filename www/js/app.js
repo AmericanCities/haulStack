@@ -1,11 +1,11 @@
 // Ionic Starter App
-
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-var myApp = angular.module('starter', ['ionic','firebase']);
+var myApp = angular.module('starter', ['ionic','starter.controllers','starter.services','firebase'])
+    .constant('FIREBASE_URL','https://boiling-torch-9429.firebaseio.com');
 
-var fBase = null;
+
 
 myApp.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -17,7 +17,7 @@ myApp.run(function($ionicPlatform) {
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
-    fBase = new Firebase("https://boiling-torch-9429.firebaseio.com");
+
   });
 });
 
@@ -26,34 +26,22 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
         .state('login', {
             url: '/login',
             templateUrl: 'templates/login.html',
-            controller: 'loginCtrl'
+            controller: 'RegistrationController'
         })
-         .state('createStack', {
-             url: '/createStack',
-             templateUrl: 'templates/createStack.html'
+         .state('stackList', {
+             url: '/stackList',
+             templateUrl: 'templates/stackList.html',
+             controller: 'StackListController'
          })
          .state('stackView', {
             url: '/stackView',
-            templateUrl: 'templates/stackView.html'
-        })
-     .state('newItem', {
-         url: '/newItem',
-         templateUrl: 'templates/newItem.html'
-     });
-
+            templateUrl: 'templates/stackView.html',
+            controller: 'StackItemController'
+          })
+         .state('newItem', {
+            url: '/newItem',
+            templateUrl: 'templates/newItem.html',
+            controller: 'newItemController'
+         });
     $urlRouterProvider.otherwise("/login");
-});
-
-myApp.controller("LoginController",function($scope, $firebaseAuth, $location){
-
-    $scope.login = function(username,password) {
-        var fBaseAuth = $firebaseAuth(fBase);
-        fBaseAuth.$authWithPassword({
-            email    : username,
-            password : password
-        }).then(function(authData) {
-
-        }).catch(function(error) {
-        });
- }
 });

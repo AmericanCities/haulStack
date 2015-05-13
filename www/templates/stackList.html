@@ -1,18 +1,23 @@
-<ion-view title="category name">
+<ion-view title="Stacks" >
     <!--<ion-header-bar class="bar-stable">-->
     <!--<h1 class="title">Haul Stack</h1>-->
     <!--</ion-header-bar>-->
     <ion-content>
+        <ion-list ng-show"stacks">
+            <ion-item ng-repeat="stack in stacks" ng-click="openStack(stack)">
+                {{stack.title}}
+            </ion-item>
+        </ion-list>
         <div class="card" id="createStack">
             <div class="item item-text-wrap">
                 <div class="list">
                     <label class="item item-input" id="stackInput">
-                        <input type="text" placeholder="enter a category name">
+                        <input ng-model="stackId.title" type="text" placeholder="name your stack">
                    </label>
                 </div>
             </div>
             <div class="item item-image">
-                <a ui-sref="stackView"> <img class="plusSign" src="img/plus_sign.png" ></a>
+                <img ng-click="addStack()" class="plusSign" src="img/plus_sign.png" >
             </div>
         </div>
     </ion-content>
