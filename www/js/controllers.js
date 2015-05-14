@@ -90,44 +90,61 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('newItemController',function($scope,ItemService, $ionicPopup, $state){
-    $scope.item={
-        name      : "new item",
-        size      :""
-    };
+.controller('newItemController',function($scope, ItemService, $ionicPopup, $state, $cordovaCamera) {
+        $scope.item = {
+            name: "new item",
+            size: ""
+        };
 
-     $scope.item =   ItemService.getItem();
+        $scope.item = ItemService.getItem();
 
 
-    $scope.addItem = function(){
-         ItemService.addItem($scope.item, function(){
-         $state.go('stackView');
-         });
-    };
+        $scope.addItem = function () {
+            ItemService.addItem($scope.item, function () {
+                $state.go('stackView');
+            });
+        };
 
-    $scope.deleteItem = function() {
-        var confirmPopup = $ionicPopup.confirm({
-            title: 'Delete this Item?',
-            template: 'Are you sure?'
-        });
-        confirmPopup.then(function(res) {
-            if(res) {
-                ItemService.deleteItem(function(){
-                    $state.go('stackView');
-                })
+        $scope.deleteItem = function () {
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Delete this Item?',
+                template: 'Are you sure?'
+            });
+            confirmPopup.then(function (res) {
+                if (res) {
+                    ItemService.deleteItem(function () {
+                        $state.go('stackView');
+                    })
+                } else {
+                    console.log('stack was Deleted');
+                }
+            });
+        };
+
+        $scope.takePicture =function(){
+            if (!navigator.camera){
+                console.log("no Camera to take picture");
             } else {
-                console.log('stack was Deleted');
+                var cameraOptions = {
+                    quality: 75,
+                    destinationType: Camera.DestinationType.DATA_URL,
+                    sourceType: Camera.PictureSourceType.CAMERA,
+                    allowEdit: true,
+                    encodingType: Camera.EncodingType.JPEG,
+                    targetWidth: 200,
+                    targetHeight: 200,
+                    saveToPhotoAlbum: false
+                };
+                $cordovaCamera.getPicture(cameraOptions).then(function (imageData) {
+                    var pic = "data:image/jpeg;base64," + imageData;
+                    $scope.item.pictureURI = pic;
+                    ItemService.addPhotoToFireB(pic);
+                }, function (errorText) {
+                    $ionicPopup.alert({
+                        title: 'A camera Error Occured',
+                        template: 'The type of error was: ' + errorText
+                    });
+                });
             }
-        });
-    };
-
-
-
-    //----------- take picture code snippit
-
-
-
-
-
-
-});
+         };
+    });

@@ -181,6 +181,7 @@ margin-top: 20%;
   text-align: center;
   margin: 0 auto;
 
+
   .photoBkg{
     margin-top:50px;
     display: inline-block;
@@ -188,6 +189,16 @@ margin-top: 20%;
     height: 200px;
     background-color: $niceGray;
     vertical-align: middle;
+
+    .cameraImage{
+      margin-top:0px;
+      display: inline-block;
+      width: 200px;
+      height: 200px;
+      background-color: $niceGray;
+      vertical-align: middle;
+    }
+
 
      .ion-camera{
        font-size: 80px;
