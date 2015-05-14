@@ -1,7 +1,7 @@
 angular.module('starter.controllers', [])
 
  .controller('RegistrationController',
-    function($scope, $location, Authentication){  //add Authentication service here
+    function($scope, $location, $ionicPopup, Authentication){  //add Authentication service here
 
         $scope.user={};
 
@@ -10,7 +10,10 @@ angular.module('starter.controllers', [])
                 .then(function(user) {
                     $location.path('/stackList');
                 }).catch(function(error) {
-                    alert("ERROR: " + error);
+                    $ionicPopup.alert({
+                        title: "That didn't work",
+                        template: error
+                    });
                 });
         };
         $scope.register = function() {
@@ -19,64 +22,112 @@ angular.module('starter.controllers', [])
                 Authentication.login($scope.user);
                 $location.path('/stackList');
             }).catch(function (error) {
-                alert("ERROR: " + error);
+               $ionicPopup.alert({
+                   title: "That didn't work",
+                   template: error
+                    });
             });
         }
     })  //RegistrationController
 
-.controller('StackListController',function($scope, StackList,$state){
+.controller('StackListController',function($scope, StackList, $state){
    $scope.stackId={};
 
    $scope.stacks = StackList.all();
 
+  // includes callback function with $state.gov
    $scope.openStack = function(stackId){
-       StackList.setStack(stackId);
-       $state.go('stackView');
+       StackList.setStack(stackId,function(){
+           $state.go('stackView');
+       });
    };
 
+
    $scope.addStack = function(){
-       StackList.addStack($scope.stackId);
-       $state.go('stackView');
-   }
+       StackList.addStack($scope.stackId, function(){
+           $state.go('stackView');
+       });
+   };
     }) //StackListController
 
 
-.controller('StackItemController',function($scope,StackList){
+.controller('StackItemController',function($scope,StackList, $state, ItemService,  $ionicPopup){
         var stackId = StackList.getStack();
         $scope.stackName= stackId.title;
-        console.log("This is the stackID object that was returned, ",stackId);
-})
+        $scope.items = ItemService.all();
 
-.controller('newItemController',function($scope,StackList){
+        $scope.openItem =function(itemId){
+            ItemService.setItem(itemId, function(){
+                $state.go('newItem')
+            });
+        };
+
+        $scope.deleteStack = function() {
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Delete the stack?',
+                template: 'Are you sure, this will delete all items in this stack'
+            });
+            confirmPopup.then(function(res) {
+                if(res) {
+                    StackList.deleteStack(function(){
+                        $state.go('stackList');
+                    })
+                } else {
+                    console.log('stack was Deleted');
+                }
+            });
+        };
+
+        $scope.newItem = function(){
+            ItemService.newItem(function(){
+                $state.go('newItem');
+            })
+        };
+
+        console.log("This is the stackID object that was returned, ",$scope.items);
+
+    })
+
+
+
+.controller('newItemController',function($scope,ItemService, $ionicPopup, $state){
     $scope.item={
-        name: "new item"
+        name      : "new item",
+        size      :""
     };
 
-    var stackId = StackList.getStack();
-    $scope.stackName= stackId.title;
-    console.log("This is the stackID object that was returned, ",stackId);
+     $scope.item =   ItemService.getItem();
+
+
+    $scope.addItem = function(){
+         ItemService.addItem($scope.item, function(){
+         $state.go('stackView');
+         });
+    };
+
+    $scope.deleteItem = function() {
+        var confirmPopup = $ionicPopup.confirm({
+            title: 'Delete this Item?',
+            template: 'Are you sure?'
+        });
+        confirmPopup.then(function(res) {
+            if(res) {
+                ItemService.deleteItem(function(){
+                    $state.go('stackView');
+                })
+            } else {
+                console.log('stack was Deleted');
+            }
+        });
+    };
+
+
+
+    //----------- take picture code snippit
+
+
+
+
+
+
 });
-
-
-
-//.controller('StackListController',function($scope, $firebaseObject){
-//    $scope.list = function(){}
-    //    var currentMoFo = Authentication.getCurrentUser();
-    //
-    //    console.log("This is the MF UID:", currentMoFo.uid);
-    //    if(currentMoFo) {
-    //        var syncObject = $firebaseObject(fBase.child("users/" + currentMoFo.uid));   //fBaseAuth.uid
-    //        syncObject.$bindTo($scope, "data");
-    //    }
-    //}
-    //$scope.addStack = function(stackName){
-    //    if(stackName !== "") {
-    //        if ($scope.data.hasOwnProperty("stacks") !== true) {
-    //            $scope.data.stacks = [];
-    //        }
-    //        $scope.data.stacks.push({title: stackName});
-    //    } else{
-    //        console.log("Action not completed");
-    //    }
-    //}
-    //}); //StackListController

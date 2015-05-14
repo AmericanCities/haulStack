@@ -1,17 +1,22 @@
 <ion-view title="{{stackName}}">
-    <!--<ion-header-bar class="bar-stable">-->
-    <!--<h1 class="title">Haul Stack</h1>-->
-    <!--</ion-header-bar>-->
+    <ion-nav-buttons side="right" ng-show="false">
+        <button ng-click="deleteStack()" class="button button-icon button-clear ion-trash-a"></button>
+    </ion-nav-buttons>
+
     <ion-content>
+        <ion-list ng-show="items">
+        <ion-item ng-repeat="item in items" ng-click="openItem(item)">
+            {{item.name}}
+        </ion-item>
+        </ion-list>
+
+
         <div class="card" id="createStack">
             <div class="item item-divider">
-                Category Name
-            </div>
-            <div class="list card">
-                <P>It looks like you don't have any items in this stack. Add an item by clicking on the icon below</P>
+               Add a New Item
             </div>
             <div class="item item-image">
-                <a ui-sref="newItem"><img class="plusSign" src="img/plus_sign.png"></a>
+                <img class="plusSign" src="img/plus_sign.png" ng-click="newItem()">
             </div>
         </div>
     </ion-content>

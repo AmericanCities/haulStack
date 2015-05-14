@@ -1,12 +1,14 @@
 <ion-view title={{item.name}}>
-    <!--<ion-header-bar class="bar-stable">-->
-    <!--<h1 class="title">Haul Stack</h1>-->
-    <!--</ion-header-bar>-->
+    <ion-nav-buttons side="right">
+        <button ng-click="deleteItem()" ng-show=" item.name !== 'new item'" class="button button-icon button-clear ion-trash-a"></button>
+    </ion-nav-buttons>
     <ion-content>
 
         <div class="photoDiv">
+
             <div class="photoBkg">
-                <i class="icon-center ion-camera"></i>
+                <img src="{{pictureURI}}" class="cameraImage" ng-show=(pictureURI)>
+                <i class="icon-center ion-camera" ng-click="takePicture()"></i>
             </div>
         </div>
 
@@ -17,12 +19,11 @@
             </label>
             <div class="item range range-positive">
                 size
-                <input type="range" name="volume" min="0" max="3" value="1">
-                <!--https://github.com/driftyco/ionic/issues/1948-->
+                <input type="range" name="volume" min="0" max="3" value="1" ng-model="item.size">
             </div>
         </div>
     <div class="item item-image">
-        <a ui-sref="newItem"><img class="plusSign" src="img/plus_sign.png"></a>
+        <img class="plusSign" src="img/plus_sign.png" ng-click="addItem()">
     </div>
     </ion-content>
 </ion-view>
